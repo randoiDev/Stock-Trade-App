@@ -1,0 +1,9 @@
+package com.example.trading.simple_trading_app.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+
+@Configuration
+@EnableAsync
+public class AppConfig {
+}

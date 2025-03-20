@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stock Trade Updates</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        #tradeUpdates {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 50%;
+            margin: 20px auto;
+            text-align: left;
+            background-color: #f8f9fa;
+            min-height: 200px;
+        }
+        .trade-message {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Live Stock Trade Updates</h1>
+<p>Real-time trade executions will appear below:</p>
+
+<div id="tradeUpdates">
+    <p><em>Waiting for trade updates...</em></p>
+</div>
+
+<script>
+    const eventSource = new EventSource("http://localhost:8080/api/trades/stream");
+
+    eventSource.onmessage = function(event) {
+        console.log("New Trade: ", event.data);
+
+        const tradeUpdatesDiv = document.getElementById("tradeUpdates");
+        tradeUpdatesDiv.innerHTML += `<p class="trade-message">${event.data}</p>`;
+    };
+
+    eventSource.onerror = function() {
+        console.error("SSE connection lost. Reconnecting...");
+    };
+</script>
+
+</body>
+</html>
