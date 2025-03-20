@@ -1,7 +1,7 @@
 # 📈 Stock Trading Backend
 
 ## 📝 Project Overview
-This project is a **Spring Boot-based stock trading backend** designed to handle user authentication, stock order management, and real-time stock price updates. The application features JWT authentication, an in-memory H2 database for demonstration purposes, and scheduled stock price updates every 5 seconds.
+This project is a **Spring Boot-based stock trading backend** designed to handle user authentication, stock order management, and real-time stock price updates. The application features JWT authentication, an in-memory H2 database for demonstration purposes, and scheduled stock price updates every 20 seconds.
 
 ## 🛠️ Technologies Used
 - **Java 17** – Primary language
@@ -102,6 +102,10 @@ curl -X POST http://localhost:8080/api/users/login \
 #### **2. User info**
 **Endpoint:** `GET /api/users/info`
 **Description:** Returns info for currently logged-in user.
+**Request Headers:**
+```http
+Authorization: Bearer your-jwt-token
+```
 **Response:**
 ```json
 {
@@ -131,12 +135,11 @@ curl -X POST http://localhost:8080/api/users/login \
 ```bash
 curl -X POST http://localhost:8080/api/users/login \
      -H "Content-Type: application/json" \
-     -d '{"username": "user1", "password": "password1"}'
 ```
 
 ### **📊 Stock Order Management**
-#### **2. Place a New Order**
-**Endpoint:** `POST /api/orders`
+#### **3. Place a New Order**
+**Endpoint:** `POST /api/orders/place`
 **Description:** Places a new buy/sell order (Requires authentication).
 **Request Headers:**
 ```http
@@ -153,38 +156,32 @@ Authorization: Bearer your-jwt-token
 **Response:**
 ```json
 {
-  "message": "Order has been placed",
-  "status": "PENDING"
+  "message": "Order has been placed"
 }
 ```
 **Testing:**
 ```bash
-curl -X POST http://localhost:8080/api/orders \
+curl -X POST http://localhost:8080/api/orders/place \
      -H "Authorization: Bearer your-jwt-token" \
      -H "Content-Type: application/json" \
-     -d '{"stockSymbol": "AAPL", "orderType": "BUY", "quantity": 10, "price": 150.0}'
+     -d '{"stockSymbol": "AAPL", "orderType": "BUY", "quantity": 10}'
 ```
 
 ### **📈 Stock Prices**
-#### **3. Get Stock Prices**
-**Endpoint:** `GET /api/stocks`
-**Description:** Fetches the latest stock prices.
+#### **4. Get Stock Prices**
+**Endpoint:** `GET /api/orders/revoke/{orderId}`
+**Description:** Revokes placed order.
 **Response:**
 ```json
-[
-  {
-    "symbol": "AAPL",
-    "price": 987.65
-  },
-  {
-    "symbol": "GOOGL",
-    "price": 456.78
-  }
-]
+{
+  "message": "Order has been revoked"
+}
 ```
 **Testing:**
 ```bash
-curl -X GET http://localhost:8080/api/stocks
+curl -X POST http://localhost:8080/api/orders/revoke/{orderId} \
+     -H "Authorization: Bearer your-jwt-token" \
+     -H "Content-Type: application/json" \
 ```
 
 ## 📌 Additional Notes
