@@ -32,7 +32,7 @@ cd your-repo
 ```
 
 ### **3️⃣ Configure Environment Variables**
-Create an `application.properties` file inside `src/main/resources/` and set the required properties:
+Create an `application.properties` file inside `src/main/resources/` and set the required properties (for example):
 ```properties
 server.port=8080
 jwt.secret=YOUR_SECRET_KEY
@@ -40,8 +40,8 @@ jwt.expiration=3600000  # 1 hour in milliseconds
 spring.h2.console.enabled=true
 spring.datasource.url=jdbc:h2:mem:testdb
 spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
+spring.datasource.username=admin
+spring.datasource.password=admin
 ```
 
 ### **4️⃣ Build the Project Using CLI**
@@ -184,10 +184,31 @@ curl -X POST http://localhost:8080/api/orders/revoke/{orderId} \
      -H "Content-Type: application/json" \
 ```
 
+### **📈 Stock Prices**
+#### **5. Get top BUY/SELL orders**
+**Endpoint:** `GET /api/orders/top-buy#top-sell/{stockSymbol}`
+**Description:** Fetch list of top orders.
+**Response:**
+```json
+[
+    {
+        "stockSymbol": "AAPL",
+        "type": "BUY",
+        "price": 150.50,
+        "quantity": 5
+    }
+]
+```
+**Testing:**
+```bash
+curl -X POST http://localhost:8080/api/orders/revoke/{orderId} \
+     -H "Authorization: Bearer your-jwt-token" \
+     -H "Content-Type: application/json" \
+```
+
 ## 📌 Additional Notes
 - The application updates stock prices **every 5 seconds** via a scheduled task.
 - **JWT Authentication:** All protected endpoints require the `Authorization: Bearer <token>` header.
-- **Swagger Documentation:** Accessible at `http://localhost:8080/swagger-ui/` when running.
 
 ---
 
